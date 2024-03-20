@@ -28,8 +28,19 @@ android {
         buildConfigField("String", "RM_BASE_URL", "\"https://rickandmortyapi.com/api/\"")
     }
 
+    signingConfigs {
+        create("dev") {
+            storeFile = file("${project.rootDir}/rm-keystore")
+            keyAlias = "rickandmorty"
+            storePassword = "123456"
+            keyPassword = "123456"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("dev")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
