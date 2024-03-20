@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetCharactersUseCase @Inject constructor(
     private val characterRepository: CharacterRepository,
 ) {
-    suspend operator fun invoke(page: Int): Result<CharactersPaginated> =
-        characterRepository.getCharacters(page = page)
+    suspend operator fun invoke(page: Int, filter: String?): Result<CharactersPaginated> =
+        characterRepository.getCharacters(page = page, filter = filter)
 }

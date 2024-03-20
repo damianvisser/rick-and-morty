@@ -6,12 +6,15 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.damian.rickmorty.common.Failure
 import com.damian.rickmorty.domain.model.Character
 import com.damian.rickmorty.domain.usecase.GetCharactersUseCase
+import com.damian.rickmorty.presentation.ui.detail.DetailedViewModelState
 import com.damian.rickmorty.presentation.util.SingleEventWithContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,14 +30,23 @@ class HomeViewModel @Inject constructor(
     val charactersState: MutableStateFlow<PagingData<Character>> get() = _charactersState
 
 
+    private val _state = MutableStateFlow(HomeViewModelState())
+    val state: StateFlow<HomeViewModelState> = _state
+
     init {
-        getCharactersPaginated()
+        getCharactersPaginated(null)
     }
 
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.OnClickCharacter -> onClickCharacter(event.characterId)
+            is HomeEvent.OnSearchBarTextChanged -> onSearchBarTextChanged(event.text)
         }
+    }
+
+    private fun onSearchBarTextChanged(inputText: String) {
+        _state.update { it.copy(searchInputText = inputText) }
+        getCharactersPaginated(filter = inputText)
     }
 
     private fun onClickCharacter(characterId: Int) {
@@ -43,12 +55,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getCharactersPaginated() {
+    private fun getCharactersPaginated(filter: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             Pager(
                 config = PagingConfig(pageSize = 40, prefetchDistance = 20),
                 pagingSourceFactory = {
-                    CharactersPagingSource(getCharactersUseCase)
+                    CharactersPagingSource(
+                        getCharactersUseCase = getCharactersUseCase,
+                        filter = filter,
+                    )
                 }
             ).flow
                 .cachedIn(this)

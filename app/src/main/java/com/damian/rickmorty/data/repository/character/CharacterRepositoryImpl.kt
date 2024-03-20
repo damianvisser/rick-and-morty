@@ -11,7 +11,8 @@ class CharacterRepositoryImpl @Inject constructor(
 ) : CharacterRepository {
     override suspend fun getCharacters(
         page: Int,
-    ): Result<CharactersPaginated> = service.getCharactersPaginated(page)
+        filter: String?,
+    ): Result<CharactersPaginated> = service.getCharactersPaginated(page = page, filter = filter)
         .map { result ->
             CharactersPaginated(
                 prevPage = result.info.prev?.let { page - 1 },

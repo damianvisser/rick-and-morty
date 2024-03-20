@@ -22,9 +22,11 @@ class CharacterApi @Inject constructor(
 ) : CharacterService {
     override suspend fun getCharactersPaginated(
         page: Int,
+        filter: String?,
     ): Result<GetCharactersResponseDTO> = httpClient.client.get {
         url(BuildConfig.RM_BASE_URL + Route.CHARACTERS)
         parameter("page", page)
+        filter?.let { parameter("name", filter) }
         contentType(ContentType.Application.Json)
     }.let { response ->
         if (response.status == HttpStatusCode.OK) {
@@ -34,6 +36,8 @@ class CharacterApi @Inject constructor(
                 Timber.e("SERIALIZATION_FAILURE", e)
                 Result.failure(Failure.NetworkSerializationFailure)
             }
+        } else if (response.status == HttpStatusCode.NotFound) {
+            Result.failure(Failure.NoCharactersFound)
         } else {
             Timber.e("NETWORK_FAILURE", response)
             Result.failure(Failure.NetworkFailure(response.status.value))

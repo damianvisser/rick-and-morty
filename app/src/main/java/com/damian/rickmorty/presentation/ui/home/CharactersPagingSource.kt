@@ -2,16 +2,19 @@ package com.damian.rickmorty.presentation.ui.home
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.damian.rickmorty.common.Failure
 import com.damian.rickmorty.common.failed
 import com.damian.rickmorty.domain.model.Character
 import com.damian.rickmorty.domain.usecase.GetCharactersUseCase
+import timber.log.Timber
 
 class CharactersPagingSource(
     private val getCharactersUseCase: GetCharactersUseCase,
+    private val filter: String?,
 ) : PagingSource<Int, Character>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         val currentPage = params.key ?: 0
-        val characters = getCharactersUseCase(page = currentPage)
+        val characters = getCharactersUseCase(page = currentPage, filter = filter)
             .failed { return LoadResult.Error(it) }
 
         return LoadResult.Page(

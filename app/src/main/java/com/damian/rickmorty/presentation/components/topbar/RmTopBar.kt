@@ -48,19 +48,20 @@ object RmTopBar {
                     modifier = Modifier,
                     enabled = true,
                 )
-            }
-        },
-        toolbarMiddleItem = {
-            title?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Proportional,
-                            trim = LineHeightStyle.Trim.None,
+
+                Spacer(modifier = Modifier.width(24.dp))
+
+                title?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Proportional,
+                                trim = LineHeightStyle.Trim.None,
+                            ),
                         ),
-                    ),
-                )
+                    )
+                }
             }
         },
         toolbarEndItem = endItem,

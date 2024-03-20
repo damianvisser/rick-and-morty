@@ -6,4 +6,6 @@ sealed class Failure: Throwable() {
     ): Failure()
 
     data object NetworkSerializationFailure: Failure()
+
+    data object NoCharactersFound: Failure()
 }
