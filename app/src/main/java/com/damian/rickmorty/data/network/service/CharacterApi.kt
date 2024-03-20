@@ -3,6 +3,7 @@ package com.damian.rickmorty.data.network.service
 import com.damian.rickmorty.BuildConfig
 import com.damian.rickmorty.common.Failure
 import com.damian.rickmorty.data.network.client.KtorClientAdapter
+import com.damian.rickmorty.data.network.model.CharacterDTO
 import com.damian.rickmorty.data.network.model.GetCharactersResponseDTO
 import com.damian.rickmorty.data.network.route.Route
 import io.ktor.client.call.body
@@ -22,13 +23,30 @@ class CharacterApi @Inject constructor(
     override suspend fun getCharactersPaginated(
         page: Int,
     ): Result<GetCharactersResponseDTO> = httpClient.client.get {
-        url(BuildConfig.RM_BASE_URL + Route.GET_ALL_CHARACTERS)
+        url(BuildConfig.RM_BASE_URL + Route.CHARACTERS)
         parameter("page", page)
         contentType(ContentType.Application.Json)
     }.let { response ->
         if (response.status == HttpStatusCode.OK) {
             try {
                 Result.success(response.body<GetCharactersResponseDTO>())
+            } catch (e: JsonConvertException) {
+                Timber.e("SERIALIZATION_FAILURE", e)
+                Result.failure(Failure.NetworkSerializationFailure)
+            }
+        } else {
+            Timber.e("NETWORK_FAILURE", response)
+            Result.failure(Failure.NetworkFailure(response.status.value))
+        }
+    }
+
+    override suspend fun getCharacterById(characterId: Int): Result<CharacterDTO> = httpClient.client.get {
+        url(BuildConfig.RM_BASE_URL + Route.CHARACTERS + characterId)
+        contentType(ContentType.Application.Json)
+    }.let { response ->
+        if (response.status == HttpStatusCode.OK) {
+            try {
+                Result.success(response.body<CharacterDTO>())
             } catch (e: JsonConvertException) {
                 Timber.e("SERIALIZATION_FAILURE", e)
                 Result.failure(Failure.NetworkSerializationFailure)

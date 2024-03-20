@@ -1,4 +1,7 @@
 package com.damian.rickmorty.presentation.ui.detail
 
-class DetailedViewModelState {
-}
+import com.damian.rickmorty.domain.model.Character
+
+data class DetailedViewModelState(
+    val character: Character? = null,
+)

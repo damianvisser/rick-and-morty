@@ -34,7 +34,7 @@ object RmTopBar {
     @Composable
     fun Back(
         onClick: () -> Unit,
-        @StringRes title: Int? = null,
+        title: String? = null,
         endItem: (@Composable BoxScope.() -> Unit)? = null,
     ) = RmTopBarImpl(
         toolbarStartItem = {
@@ -53,7 +53,7 @@ object RmTopBar {
         toolbarMiddleItem = {
             title?.let {
                 Text(
-                    text = stringResource(id = it),
+                    text = it,
                     style = MaterialTheme.typography.labelLarge.copy(
                         lineHeightStyle = LineHeightStyle(
                             alignment = LineHeightStyle.Alignment.Proportional,
