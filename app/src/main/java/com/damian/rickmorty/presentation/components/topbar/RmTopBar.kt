@@ -1,6 +1,5 @@
 package com.damian.rickmorty.presentation.components.topbar
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

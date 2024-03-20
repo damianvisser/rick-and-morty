@@ -1,6 +1,5 @@
 package com.damian.rickmorty.presentation.components.textfield
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

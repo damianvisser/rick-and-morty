@@ -6,15 +6,16 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.damian.rickmorty.common.Failure
 import com.damian.rickmorty.domain.model.Character
 import com.damian.rickmorty.domain.usecase.GetCharactersUseCase
-import com.damian.rickmorty.presentation.ui.detail.DetailedViewModelState
 import com.damian.rickmorty.presentation.util.SingleEventWithContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,12 +30,12 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(value = PagingData.empty())
     val charactersState: MutableStateFlow<PagingData<Character>> get() = _charactersState
 
-
     private val _state = MutableStateFlow(HomeViewModelState())
     val state: StateFlow<HomeViewModelState> = _state
 
     init {
         getCharactersPaginated(null)
+        updateSearchWithDebounce()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -46,7 +47,16 @@ class HomeViewModel @Inject constructor(
 
     private fun onSearchBarTextChanged(inputText: String) {
         _state.update { it.copy(searchInputText = inputText) }
-        getCharactersPaginated(filter = inputText)
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun updateSearchWithDebounce() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state
+                .map { it.searchInputText }
+                .debounce(500)
+                .collect { getCharactersPaginated(it) }
+        }
     }
 
     private fun onClickCharacter(characterId: Int) {

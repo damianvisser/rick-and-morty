@@ -16,19 +16,19 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    background = Color(0xFF174918),
     primary = Color(0xFF2F9331),
     secondary = Color.Black,
-    surface = Color(0xFF2F9331),
-    onSurface = Color.Black,
+    surface = Color(0xFF2C2C2E),
+    onSurface = Color.White,
+    surfaceTint = Color(0xFF8E8E93),
 )
 
 private val LightColorScheme = lightColorScheme(
-    background = Color(0xFF8BCF21),
-    primary = Color(0xFF2F9331),
+    primary = Color(0xFF8BCF21),
     secondary = Color.White,
-    surface = Color(0xFF2F9331),
-    onSurface = Color.White,
+    surface = Color(0xFFF2F2F7),
+    onSurface = Color.Black,
+    surfaceTint = Color(0xFF8E8E93),
 )
 
 @Composable
@@ -51,7 +51,7 @@ fun RmTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = android.graphics.Color.TRANSPARENT
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

@@ -41,8 +41,8 @@ class MainActivity : ComponentActivity() {
                         Color.TRANSPARENT,
                     ) { darkThemeEnabled },
                     navigationBarStyle = SystemBarStyle.auto(
-                        Color.argb(0xe6, 0xFF, 0xFF, 0xFF), // Default Android color
                         Color.argb(0x80, 0x1b, 0x1b, 0x1b), // Default Android color
+                        Color.argb(0xe6, 0xFF, 0xFF, 0xFF), // Default Android color
                     ) { darkThemeEnabled },
                 )
                 onDispose {}
