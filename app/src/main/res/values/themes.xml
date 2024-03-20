@@ -4,4 +4,10 @@
     <style name="Theme.RickAndMortyApplication" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="Theme.RickAndMorty.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_rick_and_morty_logo</item>
+        <item name="windowSplashScreenBackground">@color/primary</item>
+        <item name="postSplashScreenTheme">@style/Theme.RickAndMortyApplication</item>
+    </style>
 </resources>

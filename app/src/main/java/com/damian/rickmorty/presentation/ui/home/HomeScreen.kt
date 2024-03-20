@@ -106,7 +106,6 @@ private fun Characters(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
-            .padding(top = 24.dp)
             .fillMaxWidth(),
         contentPadding = PaddingValues(bottom = 24.dp, start = 6.dp, end = 6.dp),
     ) {

@@ -22,6 +22,7 @@ kotlinx_serialization = "1.6.1"
 ktor = "2.3.2"
 ksp = "1.9.20-1.0.13"
 timber = "5.0.1"
+splashscreen = "1.0.1"
 
 [libraries]
 # GRADLE
@@ -90,6 +91,9 @@ androidx-paging-common-ktx = { group = "androidx.paging", name = "paging-common-
 
 # SERIALIZATION
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx_serialization" }
+
+# SPLASHSCREEN https://developer.android.com/develop/ui/views/launch/splash-screen#getting-started
+androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 
 # TIMBER https://github.com/JakeWharton/timber/releases
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
