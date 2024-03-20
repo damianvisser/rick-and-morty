@@ -1,6 +1,7 @@
 package com.damian.rickmorty.presentation.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,12 +26,19 @@ import coil.compose.AsyncImage
 import com.damian.rickmorty.domain.model.Character
 
 @Composable
-fun HomeRoute() = HomeScreen()
+fun HomeRoute(
+    onClickCharacter: (Int) -> Unit,
+) = HomeScreen(
+    onClickCharacter = onClickCharacter,
+)
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    onClickCharacter: (Int) -> Unit,
 ) {
+    viewModel.onClickCharacter.collect { onClickCharacter(it) }
+
     val characterPagingItems: LazyPagingItems<Character> = viewModel.charactersState
         .collectAsLazyPagingItems()
 
@@ -45,6 +53,7 @@ fun HomeScreen(
                 characterPagingItems[it]?.let { character ->
                     CharacterCard(
                         character = character,
+                        onEvent = { event -> viewModel.onEvent(event) },
                         modifier = Modifier.padding(6.dp),
                     )
                 }
@@ -56,12 +65,17 @@ fun HomeScreen(
 @Composable
 private fun CharacterCard(
     character: Character,
+    onEvent: (HomeEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) = Card(
     shape = RoundedCornerShape(6.dp),
     modifier = modifier,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { onEvent(HomeEvent.OnClickCharacter(character.id)) },
+    ) {
         AsyncImage(
             model = character.image,
             contentDescription = null,
