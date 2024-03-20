@@ -8,7 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.damian.rickmorty.domain.model.Character
 import com.damian.rickmorty.domain.usecase.GetCharactersUseCase
-import com.damian.rickmorty.presentation.util.SingleEvent
 import com.damian.rickmorty.presentation.util.SingleEventWithContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

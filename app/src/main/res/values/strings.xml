@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RickAndMortyApplication</string>
+    <string name = "home_title">Rick and Morty</string>
 </resources>
